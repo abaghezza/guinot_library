@@ -17,12 +17,12 @@ class LivreType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('cote', TextType::class)
-            ->add('availability',CheckboxType::class)
-            ->add('picture',TextType::class)
-            ->add('authtor',TextType::class)
-            ->add('special',TextType::class)
+            ->add('availability', CheckboxType::class)
+            ->add('picture', TextType::class)
+            ->add('authtor', TextType::class)
+            ->add('special', CheckboxType::class)
             //->add('loans',EntityType::class, [
-              //   ])
+            //   ])
         ;
     }
 

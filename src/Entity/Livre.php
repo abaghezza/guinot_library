@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LivreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Ressources;
 
@@ -27,6 +29,16 @@ class Livre extends Ressource
      * @ORM\Column(type="boolean")
      */
     private $special;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Loan::class, mappedBy="livres")
+     */
+    private $loans;
+
+    public function __construct()
+    {
+        $this->loans = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -53,6 +65,33 @@ class Livre extends Ressource
     public function setSpecial(bool $special): self
     {
         $this->special = $special;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Loan[]
+     */
+    public function getLoans(): Collection
+    {
+        return $this->loans;
+    }
+
+    public function addLoan(Loan $loan): self
+    {
+        if (!$this->loans->contains($loan)) {
+            $this->loans[] = $loan;
+            $loan->addLivre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoan(Loan $loan): self
+    {
+        if ($this->loans->removeElement($loan)) {
+            $loan->removeLivre($this);
+        }
 
         return $this;
     }

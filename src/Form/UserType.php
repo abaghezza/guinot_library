@@ -13,8 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class UserType extends AbstractType
 {
@@ -22,16 +22,17 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            
-            ->add('roles', ChoiceType::class, [
+             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Utilisateur' => 'ROLE_USER',
                     'Benevol' => 'ROLE_VOLONTEER',
                     'Gestionnaire' => 'ROLE_AGENT',
                     'Administrateurr' => 'ROLE_ADMIN',
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => true,
+                //'choice_label' => ,
+                //'choice_value' => ,
                 'label' => 'Rôles',
             ])
             ->add('password', RepeatedType::class, [
