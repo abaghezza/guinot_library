@@ -19,6 +19,21 @@ class LivreRepository extends ServiceEntityRepository
         parent::__construct($registry, Livre::class);
     }
 
+    /**
+     * Permet de retourner les livres qui sont disponible avec l'argument true
+     * et les livres non disponible avec le paramétre false 
+     */
+    /*
+     public function findByAvailability(bool $value)
+    {
+        //$value = true; 
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.availability = :val')
+            ->setParameter('val', $value)
+            ->orderBy('l.title', 'ASC')
+    }
+    */
+
     // /**
     //  * @return Livre[] Returns an array of Livre objects
     //  */

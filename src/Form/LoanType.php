@@ -5,7 +5,9 @@ namespace App\Form;
 use App\Entity\Loan;
 use App\Entity\User;
 use App\Entity\CDRom;
-use App\Entity\Livre;;
+use App\Entity\Livre;
+use App\Repository\CDRomRepository;;
+
 use App\Repository\LivreRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,37 +19,38 @@ class LoanType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('createdAt')
-            ->add('udatedAt')
-            ->add('status')
+
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => function ($user) {
                     return $user->getFirstName();
                 }
             ])
-            /* 
+
             ->add('livres', EntityType::class, [
                 'class' => Livre::class,
                 'query_builder' => function (LivreRepository $livre) {
                     return $livre->createQueryBuilder('l')
+                        ->andWhere('l.availability = :val')
+                        ->setParameter('val', true)
                         ->orderBy('l.title', 'ASC');
                 },
                 'choice_label' => 'title',
-            ])  */
-            
-            ->add('livres', EntityType::class, [
-                'class' => Livre::class,
-                'choice_label' => function ($livre) {
-                    return $livre->getTitle();
-                }
             ])
+
+
 
             ->add('cdrom', EntityType::class, [
                 'class' => CDRom::class,
-                'choice_label' => function ($cdrom) {
-                    return $cdrom->getTitle();
-                }
+                'query_builder' => function (CDRomRepository $cdrom) {
+                    return $cdrom->createQueryBuilder('c')
+                        ->andWhere('c.availability = :val')
+                        ->setParameter('val', true)
+                        ->orderBy('c.title', 'ASC');
+                },
+                'choice_label' => 'title',
+            
+
             ]);
     }
 
