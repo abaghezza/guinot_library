@@ -6,8 +6,7 @@ use App\Repository\RessourceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
-
+ 
 
 abstract class Ressource
 {
@@ -38,19 +37,26 @@ abstract class Ressource
      */
     public $picture;
 
-
+    /**
+     * @ORM\ManyToMany(targetEntity=Loan::class, mappedBy="ressources")
+     */
+    private $loans;
 
     /**
      * @ORM\Column(type="boolean")
      */
     public $searchable;
 
-   
+    public function __construct()
+    {
+        $this->loans = new ArrayCollection();
+    }
 
     private function getId(): ?int
     {
         return $this->id;
     }
+    
 
     public function getTitle(): ?string
     {
@@ -100,7 +106,32 @@ abstract class Ressource
         return $this;
     }
 
-   
+    /**
+     * @return Collection|Loan[]
+     */
+    public function getLoans(): Collection
+    {
+        return $this->loans;
+    }
+
+    public function addLoan(Loan $loan): self
+    {
+        if (!$this->loans->contains($loan)) {
+            $this->loans[] = $loan;
+            $loan->addRessource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoan(Loan $loan): self
+    {
+        if ($this->loans->removeElement($loan)) {
+            $loan->removeRessource($this);
+        }
+
+        return $this;
+    }
 
     public function getSearchable(): ?bool
     {

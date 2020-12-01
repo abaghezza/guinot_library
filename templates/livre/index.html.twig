@@ -28,6 +28,7 @@
                 <td>{{ livre.picture }}</td>
                 <td>{{ livre.authtor }}</td>
                 <td>{{ livre.special ? 'Yes' : 'No' }}</td>
+                <td>{{ livre.searchable }}</td>
                 <td>
                     <a href="{{ path('livre_show', {'id': livre.id}) }}">show</a>
                     <a href="{{ path('livre_edit', {'id': livre.id}) }}">edit</a>
