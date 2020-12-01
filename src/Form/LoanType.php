@@ -29,6 +29,7 @@ class LoanType extends AbstractType
 
             ->add('livres', EntityType::class, [
                 'class' => Livre::class,
+                'multiple'=> true,
                 'query_builder' => function (LivreRepository $livre) {
                     return $livre->createQueryBuilder('l')
                         ->andWhere('l.availability = :val')
@@ -42,8 +43,6 @@ class LoanType extends AbstractType
                     $livre -> getTitle()
                 );
                 },
-                //TODO: array collection?
-                //'choice_value' => ,
                 'placeholder' => 'aucun',
                 'required' => false,
                 
@@ -53,13 +52,21 @@ class LoanType extends AbstractType
 
             ->add('cdrom', EntityType::class, [
                 'class' => CDRom::class,
+                'multiple'=> true,
                 'query_builder' => function (CDRomRepository $cdrom) {
                     return $cdrom->createQueryBuilder('c')
                         ->andWhere('c.availability = :val')
                         ->setParameter('val', true)
                         ->orderBy('c.title', 'ASC');
                 },
-                'choice_label' => 'title',
+                'choice_label' =>  function (CDRom $cdrom) {
+                    return sprintf('(%d)- %s : %s',
+                    $cdrom -> getId(),
+                    $cdrom -> getAuthtor(),
+                    $cdrom -> getTitle()
+                );
+                },
+                'required' => false,
             
 
             ]);

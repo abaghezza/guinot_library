@@ -30,12 +30,12 @@ class Loan
     private $udatedAt;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean",  nullable=true)
      */
     private $searchable;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean",  nullable=true)
      */
     private $status;
 
@@ -176,7 +176,10 @@ class Loan
         return $this;
     }
 
-
+    public function __toString()
+    {
+        return $this->livres; 
+    }
 
    
 }
