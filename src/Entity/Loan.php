@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
  * @ORM\Entity(repositoryClass=LoanRepository::class)
- * * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks
  */
 class Loan
 {
@@ -171,6 +171,21 @@ class Loan
 
         return $this;
     }
+
+    /**
+     * Rendre le livre disponible 
+     */
+    public function AvailabilityLivre(Livre $livre) {
+        $livre->setAvailability(true); 
+    }
+
+    /**
+     * Permet d'affecter une date d'emprunt et maj d'un livre
+     */
+    public function updatedAtLivre(Livre $livre) {
+        //$livre->setUpdatedAt(new \DateTime()); 
+    }
+
 
     /**
      * @return Collection|CDRom[]

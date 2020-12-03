@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Livre;
-use App\Entity\Rechercher;
 use App\Form\LivreType;
+use App\Form\SearchType;
+use App\Entity\Rechercher;
 use App\Repository\LivreRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/livre")
@@ -30,19 +31,22 @@ class LivreController extends AbstractController
         $form = $this->createForm(SearchType::class, $search);
         $form->handleRequest($request);
 
-        $donnees = $livreRepository->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $title = $form->getData()->getTitre();
             $authtor = $form->getData()->getAuthor();
 
-            $donnees = $livreRepository->findLivre($title,$authtor);
+            
 
-
-            if ($donnees == null) {
+            if (empty($title) && empty($authtor)) {
                 $this->addFlash('erreur', 'Aucun article contenant ce mot clé dans le titre n\'a été trouvé, essayez en un autre.');
             }
+
+            return $this->render('livre/index.html.twig', [
+                'livres' => $livreRepository->findLivre($title,$authtor),
+                'form' => $form->createView()
+            ]);
         }
         
 
